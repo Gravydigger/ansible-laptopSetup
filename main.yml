@@ -1,0 +1,71 @@
+---
+  - hosts: test
+    become: true
+    
+    tasks:
+      - name: Add ppa repositories to apt
+        apt_repository:
+          repo: "{{ item }}"
+          state: present
+        loop:
+          - 'ppa:appimagelauncher-team/stable'
+          - 'ppa:kritalime/ppa'
+      
+      - name: Download Brave browser repository key
+        get_url:
+          dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+          url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+        
+      - name: Add Brave repository key to apt sources
+        lineinfile:
+          create: true
+          path: /etc/apt/sources.list.d/brave-browser-release.list
+          line: deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
+      
+      - name: Create folder to store installation files
+        file:
+          path: "{{ ansible_user_dir }}/AppImage"
+          state: directory
+        
+      - name: Download Obsidian .AppImage file
+        get_url:
+            dest: "{{ ansible_user_dir }}/AppImage/Obsidian-0.13.14.Appimage"
+            url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.13.14/Obsidian-0.13.14.AppImage
+
+      - name: Install .deb packages
+        apt:
+          deb: "{{ item }}"
+          state: present
+        loop:
+          - https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+          - https://github.com/xournalpp/xournalpp/releases/download/1.1.0/xournalpp-1.1.0-Ubuntu-focal-x86_64.deb
+          - https://discord.com/api/download?platform=linux&format=deb
+          - https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
+          
+      - name: Install required applications
+        apt:
+          update_cache: true
+          name:
+          - python3
+          - git
+          - make
+          - vim
+          - discord
+          - brave-browser
+          - neofetch
+          - krita
+          - appimagelauncher
+          - xz-utils
+          - virtualbox
+          - vagrant
+          state: present
+      
+      - name: Change AppImageLauncher to look into ~/AppImage directory
+        lineinfile:
+          path: "{{ ansible_user_dir }}/.config/appimagelauncher.cfg"
+          regexp: '^destination='
+          line: destination={{ ansible_user_dir }}/AppImage
+      
+      - debug:
+          msg: Installation complete. Remember to clone Obsidian vaults from Github, log into discord, Sync Brave, login to VScode and install virtualbox-extentions
+          
