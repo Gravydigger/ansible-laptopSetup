@@ -3,14 +3,6 @@
     become: true
     
     tasks:
-      - name: Add ppa repositories to apt
-        apt_repository:
-          repo: "{{ item }}"
-          state: present
-        loop:
-          - 'ppa:appimagelauncher-team/stable'
-          - 'ppa:kritalime/ppa'
-      
       - name: Download Brave browser repository key
         get_url:
           dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
@@ -31,6 +23,11 @@
         get_url:
             dest: "{{ ansible_user_dir }}/AppImage/Obsidian-0.13.14.Appimage"
             url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.13.14/Obsidian-0.13.14.AppImage
+       
+      - name: Download Krita .AppImage file # possible to update on its own?
+        get_url:
+            dest: "{{ ansible_user_dir }}/AppImage/Krita-5.0.0.Appimage"
+            url: https://download.kde.org/stable/krita/5.0.0/krita-5.0.0-x86_64.appimage
 
       - name: Install .deb packages
         apt:
@@ -41,6 +38,7 @@
           - https://github.com/xournalpp/xournalpp/releases/download/1.1.0/xournalpp-1.1.0-Ubuntu-focal-x86_64.deb
           - https://discord.com/api/download?platform=linux&format=deb
           - https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
+          - https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher_2.2.0-travis995.0f91801.bionic_amd64.deb # will not accept regular updates
           
       - name: Install required applications
         apt:
@@ -60,7 +58,7 @@
           - vagrant
           state: present
       
-      - name: Change AppImageLauncher to look into ~/AppImage directory
+      - name: Change AppImageLauncher to look into ~/AppImage directory # config does not exist until application has run for the first time
         lineinfile:
           path: "{{ ansible_user_dir }}/.config/appimagelauncher.cfg"
           regexp: '^destination='
