@@ -3,6 +3,14 @@
     become: true
     
     tasks:
+      - name: Install Appimagelauncher & Krita PPA's
+        apt_repository:
+          repo: "{{ item }}"
+          codename: focal
+        loop:
+          - 'ppa:kritalime/ppa'
+          - 'ppa:appimagelauncher-team/stable'
+    
       - name: Download Brave browser repository key
         get_url:
           dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
@@ -14,21 +22,16 @@
           path: /etc/apt/sources.list.d/brave-browser-release.list
           line: deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
       
-      - name: Create folder to store installation files
+      - name: Create folder to store Appimage files
         file:
-          path: "{{ ansible_user_dir }}/AppImage"
+          path: "{{ ansible_user_dir }}/Applications"
           state: directory
         
       - name: Download Obsidian .AppImage file
         get_url:
-            dest: "{{ ansible_user_dir }}/AppImage/Obsidian-0.13.14.Appimage"
+            dest: "{{ ansible_user_dir }}/Applications/Obsidian-0.13.14.Appimage"
             url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.13.14/Obsidian-0.13.14.AppImage
        
-      - name: Download Krita .AppImage file # possible to update on its own?
-        get_url:
-            dest: "{{ ansible_user_dir }}/AppImage/Krita-5.0.0.Appimage"
-            url: https://download.kde.org/stable/krita/5.0.0/krita-5.0.0-x86_64.appimage
-
       - name: Install .deb packages
         apt:
           deb: "{{ item }}"
@@ -38,7 +41,6 @@
           - https://github.com/xournalpp/xournalpp/releases/download/1.1.0/xournalpp-1.1.0-Ubuntu-focal-x86_64.deb
           - https://discord.com/api/download?platform=linux&format=deb
           - https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
-          - https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher_2.2.0-travis995.0f91801.bionic_amd64.deb # will not accept regular updates
           
       - name: Install required applications
         apt:
@@ -56,13 +58,9 @@
           - xz-utils
           - virtualbox
           - vagrant
+          - krita
+          - appimagelauncher
           state: present
-      
-      - name: Change AppImageLauncher to look into ~/AppImage directory # config does not exist until application has run for the first time
-        lineinfile:
-          path: "{{ ansible_user_dir }}/.config/appimagelauncher.cfg"
-          regexp: '^destination='
-          line: destination={{ ansible_user_dir }}/AppImage
       
       - debug:
           msg: Installation complete. Remember to clone Obsidian vaults from Github, log into discord, Sync Brave, login to VScode and install virtualbox-extentions
