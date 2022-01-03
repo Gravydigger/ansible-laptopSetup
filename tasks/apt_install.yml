@@ -16,16 +16,17 @@
     - python3
     - git
     - make
+    - whois
     - vim
-    - discord
-    - brave-browser
-    - neofetch
-    - krita
-    - appimagelauncher
+    - htop
     - xz-utils
+    - neofetch
+    - appimagelauncher
     - virtualbox
     - vagrant
+    - discord
+    - brave-browser
+    - telegram-desktop
     - krita
     - appimagelauncher
-    - whois
     state: present
