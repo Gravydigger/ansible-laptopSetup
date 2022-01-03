@@ -2,6 +2,9 @@
   - hosts: local
     become: true
     
+    vars_files:
+    - vars/vars.yml
+    
     tasks:
       - name: Install Appimagelauncher & Krita PPA's
         apt_repository:
@@ -21,16 +24,20 @@
           create: true
           path: /etc/apt/sources.list.d/brave-browser-release.list
           line: deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
-      
+             
       - name: Create folder to store Appimage files
         file:
-          path: "{{ ansible_user_dir }}/Applications"
+          path: "/home/{{ home_user }}/Applications"
           state: directory
+        become_user: "{{ home_user }}"
+        become: false
         
       - name: Download Obsidian .AppImage file
         get_url:
-            dest: "{{ ansible_user_dir }}/Applications/Obsidian-0.13.14.Appimage"
+            dest: "/home/{{ home_user }}/Applications/Obsidian-0.13.14.Appimage"
             url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.13.14/Obsidian-0.13.14.AppImage
+        become_user: "{{ home_user }}"
+        become: false
        
       - name: Install .deb packages
         apt:
