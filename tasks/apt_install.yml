@@ -1,0 +1,31 @@
+---
+- name: Install .deb packages
+  apt:
+    deb: "{{ item }}"
+    state: present
+  loop:
+    - https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+    - https://github.com/xournalpp/xournalpp/releases/download/1.1.0/xournalpp-1.1.0-Ubuntu-focal-x86_64.deb
+    - https://discord.com/api/download?platform=linux&format=deb
+    - https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
+    
+- name: Install required applications
+  apt:
+    update_cache: true
+    name:
+    - python3
+    - git
+    - make
+    - vim
+    - discord
+    - brave-browser
+    - neofetch
+    - krita
+    - appimagelauncher
+    - xz-utils
+    - virtualbox
+    - vagrant
+    - krita
+    - appimagelauncher
+    - whois
+    state: present

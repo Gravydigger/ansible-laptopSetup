@@ -1,0 +1,3 @@
+---
+- debug:
+    msg: Installation complete. Remember to clone Obsidian vaults from Github, log into discord, Sync Brave, login to VScode and install virtualbox-extentions

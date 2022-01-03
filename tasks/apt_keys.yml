@@ -1,0 +1,20 @@
+---
+- name: Install Appimagelauncher & Krita PPA's
+  apt_repository:
+    repo: "{{ item }}"
+    codename: focal
+  loop:
+    - 'ppa:kritalime/ppa'
+    - 'ppa:appimagelauncher-team/stable'
+
+- name: Download Brave browser repository key
+  get_url:
+    dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+    
+- name: Add Brave repository key to apt sources
+  lineinfile:
+    create: true
+    path: /etc/apt/sources.list.d/brave-browser-release.list
+    line: deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
+    

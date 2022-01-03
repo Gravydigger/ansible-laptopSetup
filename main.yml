@@ -1,75 +1,12 @@
 ---
-  - hosts: local
+  - hosts: test
     become: true
     
     vars_files:
     - vars/vars.yml
     
     tasks:
-      - name: Install Appimagelauncher & Krita PPA's
-        apt_repository:
-          repo: "{{ item }}"
-          codename: focal
-        loop:
-          - 'ppa:kritalime/ppa'
-          - 'ppa:appimagelauncher-team/stable'
-    
-      - name: Download Brave browser repository key
-        get_url:
-          dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
-          url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-        
-      - name: Add Brave repository key to apt sources
-        lineinfile:
-          create: true
-          path: /etc/apt/sources.list.d/brave-browser-release.list
-          line: deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main
-             
-      - name: Create folder to store Appimage files
-        file:
-          path: "/home/{{ home_user }}/Applications"
-          state: directory
-        become_user: "{{ home_user }}"
-        become: false
-        
-      - name: Download Obsidian .AppImage file
-        get_url:
-            dest: "/home/{{ home_user }}/Applications/Obsidian-0.13.14.Appimage"
-            url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.13.14/Obsidian-0.13.14.AppImage
-        become_user: "{{ home_user }}"
-        become: false
-       
-      - name: Install .deb packages
-        apt:
-          deb: "{{ item }}"
-          state: present
-        loop:
-          - https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-          - https://github.com/xournalpp/xournalpp/releases/download/1.1.0/xournalpp-1.1.0-Ubuntu-focal-x86_64.deb
-          - https://discord.com/api/download?platform=linux&format=deb
-          - https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
-          
-      - name: Install required applications
-        apt:
-          update_cache: true
-          name:
-          - python3
-          - git
-          - make
-          - vim
-          - discord
-          - brave-browser
-          - neofetch
-          - krita
-          - appimagelauncher
-          - xz-utils
-          - virtualbox
-          - vagrant
-          - krita
-          - appimagelauncher
-          - whois
-          state: present
-      
-      - debug:
-          msg: Installation complete. Remember to clone Obsidian vaults from Github, log into discord, Sync Brave, login to VScode and install virtualbox-extentions
-          
+    - import_tasks: tasks/apt_keys.yml
+    - import_tasks: tasks/appimage.yml
+    - import_tasks: tasks/apt_install.yml
+    - import_tasks: tasks/configuration.yml
