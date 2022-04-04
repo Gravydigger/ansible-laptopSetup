@@ -15,6 +15,7 @@
     name:
     - python3
     - python3-pip
+    - vlc
     - git
     - make
     - whois
