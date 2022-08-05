@@ -1,0 +1,13 @@
+---
+- name: Add flathub remote
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
+- name: Install flatpaks from flathub
+  community.general.flatpak:
+    name:
+    - org.keepassxc.KeePassXC
+    - md.obsidian.Obsidian
+    state: present

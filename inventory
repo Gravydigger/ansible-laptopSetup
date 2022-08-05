@@ -2,7 +2,7 @@
 127.0.0.1 ansible_connection=local
 
 [test]
-192.168.50.83
+192.168.60.4
 
 [test:vars]
 ansible_user=vagrant

@@ -9,4 +9,5 @@
     - import_tasks: tasks/apt_keys.yml
     - import_tasks: tasks/appimage.yml
     - import_tasks: tasks/apt_install.yml
+    - import_tasks: tasks/flatpak.yml
     - import_tasks: tasks/configuration.yml

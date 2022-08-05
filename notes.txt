@@ -1,0 +1,6 @@
+
+# make sure ansible is up to date
+pip install --upgrade ansible
+
+# install required collections
+ansible-galaxy install -r requirements.yml

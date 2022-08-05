@@ -5,10 +5,17 @@
     state: directory
   become_user: "{{ home_user }}"
   become: false
-        
-- name: Download Obsidian .AppImage file
+
+- name: Download AppImage Updater
   get_url:
-      dest: "/home/{{ home_user }}/Applications/Obsidian-0.13.14.Appimage"
-      url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.13.14/Obsidian-0.13.14.AppImage
+      dest: "/home/{{ home_user }}/Applications/AppImageUpdater-2.0.0.Appimage"
+      url: https://github.com/AppImage/AppImageUpdate/releases/download/2.0.0-alpha-1-20220124/AppImageUpdate-x86_64.AppImage
+  become_user: "{{ home_user }}"
+  become: false
+
+- name: Download Nextcloud AppImage file
+  get_url:
+      dest: "/home/{{ home_user }}/Applications/Nextcloud-{{ nextcloud_version }}.Appimage"
+      url: "https://github.com/nextcloud/desktop/releases/download/v{{ nextcloud_version }}/Nextcloud-{{ nextcloud_version }}-x86_64.AppImage"
   become_user: "{{ home_user }}"
   become: false

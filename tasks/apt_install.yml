@@ -5,9 +5,9 @@
     state: present
   loop:
     - https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-    - https://github.com/xournalpp/xournalpp/releases/download/1.1.0/xournalpp-1.1.0-Ubuntu-focal-x86_64.deb
+    - https://github.com/xournalpp/xournalpp/releases/download/v{{ xournalpp_version }}/xournalpp-{{ xournalpp_version }}-Ubuntu-focal-x86_64.deb      
     - https://discord.com/api/download?platform=linux&format=deb
-    - https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
+    - https://github.com/RustScan/RustScan/releases/download/{{ rustscan_version }}/rustscan_{{ rustscan_version }}_amd64.deb
     
 - name: Install required applications
   apt:
@@ -15,6 +15,7 @@
     name:
     - python3
     - python3-pip
+    - flatpak
     - vlc
     - git
     - make
@@ -31,4 +32,5 @@
     - telegram-desktop
     - krita
     - appimagelauncher
+    - rustscan
     state: present
