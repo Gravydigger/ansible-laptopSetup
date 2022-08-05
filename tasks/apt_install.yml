@@ -5,7 +5,8 @@
     state: present
   loop:
     - https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-    - https://github.com/xournalpp/xournalpp/releases/download/v{{ xournalpp_version }}/xournalpp-{{ xournalpp_version }}-Ubuntu-focal-x86_64.deb      
+    - https://github.com/xournalpp/xournalpp/releases/download/v{{ xournalpp_version }}/xournalpp-{{ xournalpp_version }}-Ubuntu-focal-x86_64.deb
+    - https://zoom.us/client/latest/zoom_amd64.deb      
     - https://discord.com/api/download?platform=linux&format=deb
     - https://github.com/RustScan/RustScan/releases/download/{{ rustscan_version }}/rustscan_{{ rustscan_version }}_amd64.deb
     
