@@ -14,6 +14,7 @@
     - https://zoom.us/client/latest/zoom_amd64.deb      
     - https://discord.com/api/download?platform=linux&format=deb
     - https://github.com/RustScan/RustScan/releases/download/{{ rustscan_version }}/rustscan_{{ rustscan_version }}_amd64.deb
+  ignore_errors: true
     
 - name: Install required applications
   apt:

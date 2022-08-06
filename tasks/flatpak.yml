@@ -11,4 +11,5 @@
     - org.keepassxc.KeePassXC
     - md.obsidian.Obsidian
     - org.kde.krita
+    - com.nextcloud.desktopclient.nextcloud
     state: present
