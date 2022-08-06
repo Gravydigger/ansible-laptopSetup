@@ -1,4 +1,9 @@
 ---
+- name: Update APT cache, if needed
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
 - name: Install .deb packages
   apt:
     deb: "{{ item }}"
@@ -25,13 +30,10 @@
     - htop
     - xz-utils
     - neofetch
-    - appimagelauncher
     - virtualbox
     - vagrant
     - discord
     - brave-browser
     - telegram-desktop
-    - krita
-    - appimagelauncher
     - rustscan
     state: present

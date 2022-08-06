@@ -6,6 +6,13 @@
   become_user: "{{ home_user }}"
   become: false
 
+- name: Download appimaged AppImage file
+  get_url:
+      dest: "/home/{{ home_user }}/Applications/appimaged-715.Appimage"
+      url: https://github.com/probonopd/go-appimage/releases/download/continuous/appimaged-{{ appimaged_version }}-x86_64.AppImage
+  become_user: "{{ home_user }}"
+  become: false
+
 - name: Download AppImage Updater
   get_url:
       dest: "/home/{{ home_user }}/Applications/AppImageUpdater-2.0.0.Appimage"

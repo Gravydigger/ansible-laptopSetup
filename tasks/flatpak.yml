@@ -10,4 +10,5 @@
     name:
     - org.keepassxc.KeePassXC
     - md.obsidian.Obsidian
+    - org.kde.krita
     state: present
